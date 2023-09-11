@@ -74,7 +74,9 @@ puts("#{show_month}月#{show_year}".center(20))
 puts()
 # 改行判断用
 count = wday_of_the_first_day
+# 1日の表示開始位置(曜日)まで空白埋め
 wday_of_the_first_day.times.each{printf("%3s".%(""))}
+# 1日から表示開始
 (1..last_date.mday).each do |date|
   printf("%3d".%(date))
   if count%7 == 6
