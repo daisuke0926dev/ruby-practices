@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 
 # ループ回数を設定
-Roop_amount = 20
+ROOP_AMOUNT = 20
 #1からカウント
-1.upto(Roop_amount).each do |count|
+1.upto(ROOP_AMOUNT).each do |count|
   output = ""
   if count%3==0
     output += "Fizz"
