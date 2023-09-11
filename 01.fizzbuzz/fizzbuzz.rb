@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 # ループ回数を設定
 Roop_amount = 20
 #1からカウント
