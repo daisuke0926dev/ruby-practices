@@ -6,4 +6,10 @@ Dir.foreach('.') do |item|
     output.push(item)
   end
 end
-puts(output.sort)
+# ソート
+output = output.sort
+
+output.each_with_index do |object, count|
+  printf("%-24s",object)
+  puts() if count%6==5
+end
