@@ -102,7 +102,13 @@ $*.each do |argv|
   param_score_csv = argv.split(",")
 end
 # 点数を数値に変換
-param_score_csv = param_score_csv.map{|n| n.to_i}
+param_score_csv = param_score_csv.map do |n|
+  if n=="X"
+    n = 10
+  else
+    n.to_i
+  end
+end
 p("each score : #{param_score_csv}")
 
 # フレームごとに分割
