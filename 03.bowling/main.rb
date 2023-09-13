@@ -46,6 +46,7 @@ end
 def calc_score(flame_to_scores)
   # 返却用
   flame_to_total = {}
+  two_times_strike = false
   is_strike = false
   is_spare = false
   # 以下ループ
@@ -58,6 +59,7 @@ def calc_score(flame_to_scores)
       # -------------
       # 前フレームへの処理
       # -------------
+      flame_to_total[flame_count - 2] += score if two_times_strike && ball_count.zero?
       flame_to_total[flame_count - 1] += score if can_add_before_flame(is_strike, is_spare, ball_count)
 
       # -------------
@@ -69,6 +71,7 @@ def calc_score(flame_to_scores)
     end
 
     # フレームごとの後処理
+    two_times_strike = is_strike && ball_count == 1
     is_strike = ball_count == 1
     is_spare = spare(ball_count, flame_to_total[flame_count])
   end
@@ -123,4 +126,4 @@ flame_to_scores = split_score_by_flame(param_score_csv)
 flame_to_total = calc_score(flame_to_scores)
 
 # 出力
-puts("total score : #{flame_to_total}")
+puts("total score : #{flame_to_total.values.inject(:+).to_i}")
