@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # 定数
 AMOUNT_PER_LINE = 6.0
@@ -6,7 +7,7 @@ AMOUNT_PER_LINE = 6.0
 # カレントディレクトリのファイル,ディレクトリを取得します
 # 返値: 名前の入った配列
 # ------------------------------------------------
-def get_cd_object
+def search_cd_object
   output = []
   Dir.foreach('.') do |item|
     next if ['.', '..'].include?(item)
@@ -44,7 +45,7 @@ def sort_like_ls(arr)
   part_of_arr = arr[max_columb_amount * max_lines..]
   # そのほかの部分を構築
   # 表示が綺麗な長方形になる場合
-  if max_columb_amount == 0
+  if max_columb_amount.zero?
     (AMOUNT_PER_LINE + 1).to_i.times do |line|
       sorted_arr.push(part_of_arr[(line * max_lines), max_lines])
     end
@@ -60,7 +61,10 @@ def sort_like_ls(arr)
   sorted_arr.transpose
 end
 
-pre_sort_output = get_cd_object
+# ----------------------
+# メイン処理
+# ----------------------
+pre_sort_output = search_cd_object
 
 # lsらしく表示できるようにソート
 sorted_output = sort_like_ls(pre_sort_output)
