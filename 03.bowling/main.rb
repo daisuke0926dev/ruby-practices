@@ -115,11 +115,9 @@ param_score_csv = param_score_csv.map do |val|
     val.to_i
   end
 end
-p("each score : #{param_score_csv}")
 
 # フレームごとに分割
 flame_to_scores = split_score_by_flame(param_score_csv)
-p("flame score: #{flame_to_scores}")
 
 # ボーリング計算
 flame_to_total = calc_score(flame_to_scores)
