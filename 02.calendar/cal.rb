@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
+require 'optparse'
+require "date"
 
 # ----------------------------------------------
 # コマンドラインオプションで年月を受け取ります。(省略可)
 # 返値：ハッシュ["year":yyyy, "month":mm(0埋め無し)]
 # ----------------------------------------------
 def get_show_ym
-  require 'optparse'
 
   ret_date = {"year"=>Time.now.year.to_i ,"month"=>Time.now.month.to_i}
   opt = OptionParser.new
@@ -43,7 +44,6 @@ end
 # 返値:0-6(日-土)
 #--------------------------------
 def get_wday(year,month,day)
-  require "date"
   date = Date.new(year,month,day)
   date.wday
 end
@@ -52,7 +52,6 @@ end
 # 指定された年月の末日を返します。
 #--------------------------------
 def get_last_date(year, month)
-  require "date"
   last_date = Date.new(year,month,-1)
 end
 
