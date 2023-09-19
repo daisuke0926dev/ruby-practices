@@ -80,10 +80,7 @@ end
 # 前フレームへ加算するか判断
 #---------------------------
 def can_add_before_flame(is_strike, is_spare, ball_count)
-  can_add = false
-  can_add = true if is_strike && ball_count < 2
-  can_add = true if is_spare && ball_count < 1
-  can_add
+  can_add = (is_strike && ball_count < 2) || (is_spare && ball_count < 1) ? true : false
 end
 
 #---------------------------
