@@ -41,11 +41,9 @@ def make_divided_arr(part_of_arr, divid_count, max_line_columb_count)
   divided_arr
 end
 
-pre_sort_output = current_directory_content_names
+sorted_content_names = sort_like_ls(current_directory_content_names)
 
-sorted_output = sort_like_ls(pre_sort_output)
-
-sorted_output.each_with_index do |_object, i|
+sorted_content_names.each do |content_names|
   sorted_output[i].each { |v| printf('%-24s', v) }
   puts
 end
