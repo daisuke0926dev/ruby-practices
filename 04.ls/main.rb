@@ -41,9 +41,11 @@ def make_divided_arr(part_of_arr, divid_count, max_line_columb_count)
   divided_arr
 end
 
-sorted_content_names = sort_like_ls(current_directory_content_names)
+content_names = current_directory_content_names
+max_content_name_length = content_names.map(&:length).max
+sorted_content_names = sort_like_ls(content_names)
 
-sorted_content_names.each do |content_names|
-  sorted_output[i].each { |v| printf('%-24s', v) }
+sorted_content_names.each do |sorted_content_name|
+  sorted_content_name.each { |v| print "%-#{max_content_name_length+1}s" % v }
   puts
 end
