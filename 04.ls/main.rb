@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-AMOUNT_PER_LINE = 3
-
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names
   Dir.foreach('.').reject do |content_name|
@@ -12,8 +10,10 @@ end
 
 def vertical_sort(content_names)
   sorted_content_names = []
-  max_number_of_lines = (content_names.size / AMOUNT_PER_LINE.to_f).ceil
-  amount_of_max_line_column = (content_names.size % AMOUNT_PER_LINE)
+  # 4つ表示時のみ2行で折り返し、それ以外はMAX3行で折り返すので。
+  limit_per_line = content_names.size==4 ? 2 : 3
+  max_number_of_lines = (content_names.size / limit_per_line.to_f).ceil
+  amount_of_max_line_column = (content_names.size % limit_per_line)
 
   simple_sorted_content_names = content_names.sort
   amount_of_max_line_column.times do |line|
@@ -24,9 +24,9 @@ def vertical_sort(content_names)
 
   # 転置後、縦に連番させるために、配列を区切ります
   divided_content_without_max_line_column = if amount_of_max_line_column.zero?
-                                              make_divided_content_names(content_without_max_line_column, max_number_of_lines, 0)
+                                              make_divided_content_names(content_without_max_line_column, max_number_of_lines, 0, limit_per_line)
                                             else
-                                              make_divided_content_names(content_without_max_line_column, max_number_of_lines - 1, amount_of_max_line_column)
+                                              make_divided_content_names(content_without_max_line_column, max_number_of_lines - 1, amount_of_max_line_column, limit_per_line)
                                             end
   sorted_content_names.concat(divided_content_without_max_line_column)
 
@@ -35,9 +35,9 @@ def vertical_sort(content_names)
   filled_nil_sorted_content_names.transpose
 end
 
-def make_divided_content_names(content_without_max_line_column, divid_count, amount_of_max_line_column)
+def make_divided_content_names(content_without_max_line_column, divid_count, amount_of_max_line_column, limit_per_line)
   divided_content_names = []
-  (AMOUNT_PER_LINE - amount_of_max_line_column + 1).times do |line|
+  (limit_per_line - amount_of_max_line_column + 1).times do |line|
     divided_content_names.push(content_without_max_line_column[(line * divid_count), divid_count])
   end
   divided_content_names
