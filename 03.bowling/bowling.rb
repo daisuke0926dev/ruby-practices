@@ -119,4 +119,4 @@ flame_to_scores = split_score_by_flame(param_score_csv)
 flame_to_total = calc_score(flame_to_scores)
 
 # 出力
-puts("total score : #{flame_to_total.values.inject(:+).to_i}")
+puts(flame_to_total.values.inject(:+))
