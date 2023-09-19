@@ -12,30 +12,19 @@ def split_score_by_frame(scores)
   frame_count = FIRST_FRAME
   # 返却用ハッシュ
   frame_to_scores = {}
-  # スコア退避用
-  store_score = []
-  # 2投目か判断
-  is_second_throw = false
 
-  # 分割処理
-  scores.each do |score|
-    # 最終フレーム用
-    if frame_count == LAST_FRAME
-      store_score.push(score)
-    # フレーム最終投
-    elsif score == STRIKE_SCORE || is_second_throw
-      store_score.push(score)
-      frame_to_scores[frame_count] = store_score
-      frame_count += 1
-      # クリア
-      store_score = []
-      is_second_throw = false
+  while frame_count < LAST_FRAME
+    if scores.first == STRIKE_SCORE
+      frame_to_scores[frame_count] = [scores.shift]
     else
-      store_score.push(score)
-      is_second_throw = true
+      frame_to_scores[frame_count] = scores.shift(2)
     end
+    frame_count += 1
   end
-  frame_to_scores[LAST_FRAME] = store_score
+
+  # 最終フレームの処理
+  frame_to_scores[LAST_FRAME] = scores
+
   frame_to_scores
 end
 
