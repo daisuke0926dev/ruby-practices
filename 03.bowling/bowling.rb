@@ -94,10 +94,7 @@ end
 # メイン処理
 #---------------------------
 # コマンドライン引数を受け取り、配列に格納
-param_score_csv = []
-ARGV.each do |argv|
-  param_score_csv = argv.split(',')
-end
+param_score_csv = ARGV[0].split(',')
 # 点数を数値に変換
 param_score_csv = param_score_csv.map do |val|
   if val == 'X'
