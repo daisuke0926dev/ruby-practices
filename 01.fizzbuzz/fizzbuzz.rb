@@ -14,6 +14,7 @@ ROOP_AMOUNT = 20
   # ここまでの処理でFizzかBuzzに該当しているか
   if output.empty?
     puts count
-  else puts output
+  else
+    puts output
   end
 end
