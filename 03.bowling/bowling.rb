@@ -59,7 +59,7 @@ def calc_score(frame_to_scores)
       # 前フレームへの処理
       # -------------
       frame_to_total[frame_count - 2] += score if two_times_strike && ball_count.zero?
-      frame_to_total[frame_count - 1] += score if can_add_before_frame(is_strike, is_spare, ball_count)
+      frame_to_total[frame_count - 1] += score if can_add_before_frame?(is_strike, is_spare, ball_count)
 
       # -------------
       # 今フレームへの処理
@@ -71,7 +71,7 @@ def calc_score(frame_to_scores)
     # フレームごとの後処理
     two_times_strike = is_strike && ball_count == 1
     is_strike = ball_count == 1
-    is_spare = spare(ball_count, frame_to_total[frame_count])
+    is_spare = spare?(ball_count, frame_to_total[frame_count])
   end
   frame_to_total
 end
