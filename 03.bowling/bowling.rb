@@ -2,16 +2,16 @@
 # frozen_string_literal: true
 
 STRIKE_SCORE = 10
-FIRST_FLAME = 1
-LAST_FLAME = 10
+FIRST_FRAME = 1
+LAST_FRAME = 10
 
 #---------------------------
 # フレーム分割処理
 #---------------------------
-def split_score_by_flame(scores)
-  flame_count = FIRST_FLAME
+def split_score_by_frame(scores)
+  frame_count = FIRST_FRAME
   # 返却用ハッシュ
-  flame_to_scores = {}
+  frame_to_scores = {}
   # スコア退避用
   store_score = []
   # 2投目か判断
@@ -20,13 +20,13 @@ def split_score_by_flame(scores)
   # 分割処理
   scores.each do |score|
     # 最終フレーム用
-    if flame_count == LAST_FLAME
+    if frame_count == LAST_FRAME
       store_score.push(score)
     # フレーム最終投
     elsif score == STRIKE_SCORE || is_second_throw
       store_score.push(score)
-      flame_to_scores[flame_count] = store_score
-      flame_count += 1
+      frame_to_scores[frame_count] = store_score
+      frame_count += 1
       # クリア
       store_score = []
       is_second_throw = false
@@ -35,51 +35,51 @@ def split_score_by_flame(scores)
       is_second_throw = true
     end
   end
-  flame_to_scores[LAST_FLAME] = store_score
-  flame_to_scores
+  frame_to_scores[LAST_FRAME] = store_score
+  frame_to_scores
 end
 
 #---------------------------
 # ボーリング計算処理
 #---------------------------
-def calc_score(flame_to_scores)
+def calc_score(frame_to_scores)
   # 返却用
-  flame_to_total = {}
+  frame_to_total = {}
   two_times_strike = false
   is_strike = false
   is_spare = false
 
-  FIRST_FLAME.upto(LAST_FLAME) do |flame_count|
+  FIRST_FRAME.upto(LAST_FRAME) do |frame_count|
     # 投目カウント
     ball_count = 0
     # 点数群を受け取る
-    scores = flame_to_scores[flame_count]
+    scores = frame_to_scores[frame_count]
     scores.each do |score|
       # -------------
       # 前フレームへの処理
       # -------------
-      flame_to_total[flame_count - 2] += score if two_times_strike && ball_count.zero?
-      flame_to_total[flame_count - 1] += score if can_add_before_flame(is_strike, is_spare, ball_count)
+      frame_to_total[frame_count - 2] += score if two_times_strike && ball_count.zero?
+      frame_to_total[frame_count - 1] += score if can_add_before_frame(is_strike, is_spare, ball_count)
 
       # -------------
       # 今フレームへの処理
       # -------------
-      flame_to_total[flame_count] = flame_to_total[flame_count].to_i + score
+      frame_to_total[frame_count] = frame_to_total[frame_count].to_i + score
       ball_count += 1
     end
 
     # フレームごとの後処理
     two_times_strike = is_strike && ball_count == 1
     is_strike = ball_count == 1
-    is_spare = spare(ball_count, flame_to_total[flame_count])
+    is_spare = spare(ball_count, frame_to_total[frame_count])
   end
-  flame_to_total
+  frame_to_total
 end
 
 #---------------------------
 # 前フレームへ加算するか判断
 #---------------------------
-def can_add_before_flame?(is_strike, is_spare, ball_count)
+def can_add_before_frame?(is_strike, is_spare, ball_count)
   (is_strike && ball_count < 2) || (is_spare && ball_count < 1)
 end
 
@@ -108,10 +108,10 @@ param_score_csv = param_score_csv.map do |val|
 end
 
 # フレームごとに分割
-flame_to_scores = split_score_by_flame(param_score_csv)
+frame_to_scores = split_score_by_frame(param_score_csv)
 
 # ボーリング計算
-flame_to_total = calc_score(flame_to_scores)
+frame_to_total = calc_score(frame_to_scores)
 
 # 出力
-puts(flame_to_total.values.inject(:+))
+puts(frame_to_total.values.inject(:+))
