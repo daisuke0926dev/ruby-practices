@@ -11,7 +11,7 @@ end
 def vertical_sort(content_names)
   sorted_content_names = []
   # 4つ表示時のみ2行で折り返し、それ以外はMAX3行で折り返すので。
-  limit_per_line = content_names.size==4 ? 2 : 3
+  limit_per_line = content_names.size == 4 ? 2 : 3
   max_number_of_lines = (content_names.size / limit_per_line.to_f).ceil
   amount_of_max_line_column = (content_names.size % limit_per_line)
 
@@ -24,10 +24,11 @@ def vertical_sort(content_names)
 
   # 転置後、縦に連番させるために、配列を区切ります
   divided_content_names_without_max_line_column = if amount_of_max_line_column.zero?
-                                              make_divided_content_names(content_names_without_max_line_column, max_number_of_lines, 0, limit_per_line)
-                                            else
-                                              make_divided_content_names(content_names_without_max_line_column, max_number_of_lines - 1, amount_of_max_line_column, limit_per_line)
-                                            end
+                                                    make_divided_content_names(content_names_without_max_line_column, max_number_of_lines, 0, limit_per_line)
+                                                  else
+                                                    make_divided_content_names(content_names_without_max_line_column, max_number_of_lines - 1,
+                                                                               amount_of_max_line_column, limit_per_line)
+                                                  end
   sorted_content_names.concat(divided_content_names_without_max_line_column)
 
   # 行・列の要素数が異なると転置できないため、nilで埋めています。
