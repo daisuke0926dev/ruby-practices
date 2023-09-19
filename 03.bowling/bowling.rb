@@ -14,11 +14,11 @@ def split_score_by_frame(scores)
   frame_to_scores = {}
 
   while frame_count < LAST_FRAME
-    if scores.first == STRIKE_SCORE
-      frame_to_scores[frame_count] = [scores.shift]
-    else
-      frame_to_scores[frame_count] = scores.shift(2)
-    end
+    frame_to_scores[frame_count] = if scores.first == STRIKE_SCORE
+                                     [scores.shift]
+                                   else
+                                     scores.shift(2)
+                                   end
     frame_count += 1
   end
 
