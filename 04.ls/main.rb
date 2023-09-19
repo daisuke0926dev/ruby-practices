@@ -4,13 +4,9 @@
 AMOUNT_PER_LINE = 3.0
 
 def search_cd_object
-  output = []
-  Dir.foreach('.') do |object|
-    next if ['.', '..'].include?(object)
-
-    output.push(object) if !object.start_with?("\.")
+  Dir.foreach('.').reject do |object|
+    object.start_with?("\.")
   end
-  output
 end
 
 def sort_like_ls(arr)
