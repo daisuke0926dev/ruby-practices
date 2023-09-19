@@ -6,7 +6,7 @@ AMOUNT_PER_LINE = 3
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names
   Dir.foreach('.').reject do |content_name|
-    content_name.start_with?("\.")
+    content_name.start_with?('.')
   end
 end
 
