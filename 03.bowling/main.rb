@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# 定数
 STRIKE_SCORE = 10
 FIRST_FLAME = 1
 LAST_FLAME = 10
@@ -49,7 +48,7 @@ def calc_score(flame_to_scores)
   two_times_strike = false
   is_strike = false
   is_spare = false
-  # 以下ループ
+
   FIRST_FLAME.upto(LAST_FLAME) do |flame_count|
     # 投目カウント
     ball_count = 0
@@ -65,7 +64,6 @@ def calc_score(flame_to_scores)
       # -------------
       # 今フレームへの処理
       # -------------
-      # 点数を合計
       flame_to_total[flame_count] = flame_to_total[flame_count].to_i + score
       ball_count += 1
     end
@@ -75,7 +73,6 @@ def calc_score(flame_to_scores)
     is_strike = ball_count == 1
     is_spare = spare(ball_count, flame_to_total[flame_count])
   end
-  # 返却
   flame_to_total
 end
 
@@ -84,11 +81,8 @@ end
 #---------------------------
 def can_add_before_flame(is_strike, is_spare, ball_count)
   can_add = false
-  # 前フレームがストライクの場合
   can_add = true if is_strike && ball_count < 2
-  # 前フレームがスペアの場合
   can_add = true if is_spare && ball_count < 1
-  # 返却
   can_add
 end
 
@@ -98,7 +92,6 @@ end
 def spare(ball_count, score)
   is_spare = false
   is_spare = true if ball_count == 2 && score == STRIKE_SCORE
-  # 返却
   is_spare
 end
 
