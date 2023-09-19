@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-AMOUNT_PER_LINE = 3.0
+AMOUNT_PER_LINE = 3
 
 def search_cd_object
   Dir.foreach('.').reject do |object|
@@ -11,8 +11,8 @@ end
 
 def sort_like_ls(arr)
   sorted_arr = []
-  max_lines = (arr.size / AMOUNT_PER_LINE).ceil
-  max_line_columb_count = (arr.size % AMOUNT_PER_LINE).to_i
+  max_lines = (arr.size / AMOUNT_PER_LINE.to_f).ceil
+  max_line_columb_count = (arr.size % AMOUNT_PER_LINE)
 
   arr = arr.sort
   max_line_columb_count.times do |line|
@@ -34,7 +34,7 @@ end
 
 def make_divided_arr(part_of_arr, divid_count, max_line_columb_count)
   divided_arr = []
-  (AMOUNT_PER_LINE - max_line_columb_count + 1).to_i.times do |line|
+  (AMOUNT_PER_LINE - max_line_columb_count + 1).times do |line|
     divided_arr.push(part_of_arr[(line * divid_count), divid_count])
   end
   divided_arr
