@@ -9,7 +9,7 @@ require 'date'
 # 返値：ハッシュ["year":yyyy, "month":mm(0埋め無し)]
 # ----------------------------------------------
 def receive_ym_from_cmd_line_option
-  ret_date = { 'year' => Time.now.year.to_i, 'month' => Time.now.month.to_i }
+  ret_date = { year: Time.now.year.to_i, month: Time.now.month.to_i }
   opt = OptionParser.new
   # 年の指定
   opt.on('-y', '--year [ITEM]', 'select year') do |param_year|
@@ -41,8 +41,8 @@ end
 #--------------------------------
 # 表示対象年月を取得
 show_ym = receive_ym_from_cmd_line_option
-show_year = show_ym['year']
-show_month = show_ym['month']
+show_year = show_ym[:year]
+show_month = show_ym[:month]
 # 表示対象年月の初日・末日を取得
 first_date = Date.new(show_year, show_month, 1)
 last_date = Date.new(show_year, show_month, -1)
@@ -56,6 +56,6 @@ first_date.wday.times.each { print(format('%3s', '')) }
 (Date.new(show_year, show_month, 1)..Date.new(show_year, show_month, last_date.mday)).each do |date|
   print(format('%3d', date.strftime('%e')))
   # 土曜日であれば改行
-  puts if date.wday % 7 == 6
+  puts if date.wday == 6
 end
 puts
