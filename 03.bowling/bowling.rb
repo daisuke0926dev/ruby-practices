@@ -79,14 +79,14 @@ end
 #---------------------------
 # 前フレームへ加算するか判断
 #---------------------------
-def can_add_before_flame(is_strike, is_spare, ball_count)
+def can_add_before_flame?(is_strike, is_spare, ball_count)
   (is_strike && ball_count < 2) || (is_spare && ball_count < 1)
 end
 
 #---------------------------
 # スペアか判断
 #---------------------------
-def spare(ball_count, score)
+def spare?(ball_count, score)
   ball_count == 2 && score == STRIKE_SCORE
 end
 
