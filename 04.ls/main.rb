@@ -3,9 +3,10 @@
 
 AMOUNT_PER_LINE = 3
 
-def search_cd_object
-  Dir.foreach('.').reject do |object|
-    object.start_with?("\.")
+# ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
+def current_directory_content_names
+  Dir.foreach('.').reject do |content_name|
+    content_name.start_with?("\.")
   end
 end
 
@@ -40,7 +41,7 @@ def make_divided_arr(part_of_arr, divid_count, max_line_columb_count)
   divided_arr
 end
 
-pre_sort_output = search_cd_object
+pre_sort_output = current_directory_content_names
 
 sorted_output = sort_like_ls(pre_sort_output)
 
