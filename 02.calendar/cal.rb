@@ -71,17 +71,13 @@ wday_of_the_first_day = get_wday(show_year,show_month,1)
 puts("#{show_month}月#{show_year}".center(20))
 ["日","月","火","水","木","金","土"].each{|day| printf("%2s".%(day))}
 puts()
-# 改行判断用
-count = wday_of_the_first_day
 # 1日の表示開始位置(曜日)まで空白埋め
 wday_of_the_first_day.times.each{printf("%3s".%(""))}
-# 1日から表示開始
-(1..last_date.mday).each do |date|
-  printf("%3d".%(date))
-  if count%7 == 6
+(Date.new(show_year, show_month, 1)..Date.new(show_year, show_month, last_date.mday)).each do |date|
+  print "%3d" % date.strftime("%e")
+  if date.wday%7 == 6
     # 土曜日であれば改行
     puts()
   end
-  count += 1
 end
 puts()
