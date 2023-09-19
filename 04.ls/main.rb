@@ -47,6 +47,6 @@ max_content_name_length = content_names.map(&:length).max
 sorted_content_names = sort_like_ls(content_names)
 
 sorted_content_names.each do |sorted_content_name|
-  sorted_content_name.each { |v| print "%-#{max_content_name_length + 1}s" % v }
+  sorted_content_name.each { |v| print format("%-#{max_content_name_length + 1}s", v) }
   puts
 end
