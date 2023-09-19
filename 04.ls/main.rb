@@ -22,6 +22,7 @@ def sort_like_ls(content_names)
 
   content_without_max_line_column = simple_sorted_content_names[amount_of_max_line_column * max_number_of_lines..]
 
+  # 転置後、縦に連番させるために、配列を区切ります
   divided_content_without_max_line_column = if amount_of_max_line_column.zero?
                                               make_divided_content_names(content_without_max_line_column, max_number_of_lines, 0)
                                             else
