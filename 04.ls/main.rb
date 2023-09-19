@@ -10,7 +10,7 @@ def current_directory_content_names
   end
 end
 
-def sort_like_ls(content_names)
+def vertical_sort(content_names)
   sorted_content_names = []
   max_number_of_lines = (content_names.size / AMOUNT_PER_LINE.to_f).ceil
   amount_of_max_line_column = (content_names.size % AMOUNT_PER_LINE)
@@ -45,7 +45,7 @@ end
 
 content_names = current_directory_content_names
 max_content_name_length = content_names.map(&:length).max
-sorted_content_names = sort_like_ls(content_names)
+sorted_content_names = vertical_sort(content_names)
 
 sorted_content_names.each do |sorted_content_name|
   sorted_content_name.each { |v| print format("%-#{max_content_name_length + 1}s", v) }
