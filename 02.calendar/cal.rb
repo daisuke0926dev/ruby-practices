@@ -49,13 +49,6 @@ def get_wday(year,month,day)
 end
 
 #--------------------------------
-# 指定された年月の末日を返します。
-#--------------------------------
-def get_last_date(year, month)
-  last_date = Date.new(year,month,-1)
-end
-
-#--------------------------------
 # メイン処理
 #--------------------------------
 # 表示対象年月を取得
@@ -63,7 +56,7 @@ show_ym = get_show_ym
 show_year = show_ym["year"]
 show_month =show_ym["month"] 
 # 表示対象年月の末日を取得
-last_date = get_last_date(show_year,show_month)
+last_date = Date.new(year,month,-1)
 # 1日の曜日を取得
 wday_of_the_first_day = get_wday(show_year,show_month,1)
 
