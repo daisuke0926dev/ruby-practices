@@ -9,17 +9,16 @@ LAST_FRAME = 10
 # フレーム分割処理
 #---------------------------
 def split_score_by_frame(scores)
-  frame_count = FIRST_FRAME
   # 返却用ハッシュ
   scores_in_frames = {}
 
   # 最終フレーム以外を計算するので-1しています
-  FIRST_FRAME.upto(LAST_FRAME-1) do |frame_count|
+  FIRST_FRAME.upto(LAST_FRAME - 1) do |frame_count|
     scores_in_frames[frame_count] = if scores.first == STRIKE_SCORE
-                                     [scores.shift]
-                                   else
-                                     scores.shift(2)
-                                   end
+                                      [scores.shift]
+                                    else
+                                      scores.shift(2)
+                                    end
   end
 
   # 最終フレームの処理
