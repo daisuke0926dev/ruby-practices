@@ -10,9 +10,9 @@ end
 
 def sort_vertically(content_names)
   sorted_content_names = []
-  max_number_of_lines = (content_names.size/MAX_COLUMN.to_f).ceil
-  limit_per_line =  (content_names.size / max_number_of_lines.to_f).ceil
-  amount_of_max_line_column = limit_per_line - ((max_number_of_lines*limit_per_line)%content_names.size)
+  max_number_of_lines = (content_names.size / MAX_COLUMN.to_f).ceil
+  limit_per_line = (content_names.size / max_number_of_lines.to_f).ceil
+  amount_of_max_line_column = limit_per_line - ((max_number_of_lines * limit_per_line) % content_names.size)
 
   simple_sorted_content_names = content_names.sort
   amount_of_max_line_column.times do |line|
@@ -22,8 +22,8 @@ def sort_vertically(content_names)
   content_names_without_max_line_column = simple_sorted_content_names[amount_of_max_line_column * max_number_of_lines..]
 
   # 転置後、縦に連番させるために、配列を区切ります
-  divided_content_names_without_max_line_column = 
-    if amount_of_max_line_column.zero?                                                
+  divided_content_names_without_max_line_column =
+    if amount_of_max_line_column.zero?
       make_divided_content_names(content_names_without_max_line_column, max_number_of_lines, 0, limit_per_line)
     else
       make_divided_content_names(content_names_without_max_line_column, max_number_of_lines - 1, amount_of_max_line_column, limit_per_line)
