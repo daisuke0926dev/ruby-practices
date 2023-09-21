@@ -86,4 +86,4 @@ scores_in_frames = split_score_by_frame(param_score_csv)
 totals_in_frames = calc_score(scores_in_frames)
 
 # 出力
-puts(totals_in_frames.values.inject(:+))
+puts totals_in_frames.values.sum
