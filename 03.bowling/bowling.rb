@@ -11,10 +11,10 @@ LAST_FRAME = 10
 def split_score_by_frame(scores)
   frame_count = FIRST_FRAME
   # 返却用ハッシュ
-  frame_to_scores = {}
+  scores_in_frames = {}
 
   while frame_count < LAST_FRAME
-    frame_to_scores[frame_count] = if scores.first == STRIKE_SCORE
+    scores_in_frames[frame_count] = if scores.first == STRIKE_SCORE
                                      [scores.shift]
                                    else
                                      scores.shift(2)
@@ -23,39 +23,39 @@ def split_score_by_frame(scores)
   end
 
   # 最終フレームの処理
-  frame_to_scores[LAST_FRAME] = scores
+  scores_in_frames[LAST_FRAME] = scores
 
-  frame_to_scores
+  scores_in_frames
 end
 
 #---------------------------
 # ボーリング計算処理
 #---------------------------
-def calc_score(frame_to_scores)
+def calc_score(scores_in_frames)
   # 返却用
-  frame_to_total = {}
+  totals_in_frames = {}
   two_times_strike = false
   is_strike = false
   is_spare = false
 
   FIRST_FRAME.upto(LAST_FRAME) do |frame_count|
     # 点数群を受け取る
-    scores = frame_to_scores[frame_count]
+    scores = scores_in_frames[frame_count]
     scores.each_with_index do |score, ball_count|
       # 前フレームへの処理
-      frame_to_total[frame_count - 2] += score if two_times_strike && ball_count.zero?
-      frame_to_total[frame_count - 1] += score if can_add_previous_frame?(is_strike, is_spare, ball_count)
+      totals_in_frames[frame_count - 2] += score if two_times_strike && ball_count.zero?
+      totals_in_frames[frame_count - 1] += score if can_add_previous_frame?(is_strike, is_spare, ball_count)
 
       # 今フレームへの処理
-      frame_to_total[frame_count] = frame_to_total[frame_count].to_i + score
+      totals_in_frames[frame_count] = totals_in_frames[frame_count].to_i + score
     end
 
     # フレームごとの後処理
     two_times_strike = is_strike && scores.size == 1
     is_strike = scores.size == 1
-    is_spare = scores.size == 2 && frame_to_total[frame_count] == STRIKE_SCORE
+    is_spare = scores.size == 2 && totals_in_frames[frame_count] == STRIKE_SCORE
   end
-  frame_to_total
+  totals_in_frames
 end
 
 #---------------------------
@@ -80,10 +80,10 @@ param_score_csv = param_score_csv.map do |val|
 end
 
 # フレームごとに分割
-frame_to_scores = split_score_by_frame(param_score_csv)
+scores_in_frames = split_score_by_frame(param_score_csv)
 
 # ボーリング計算
-frame_to_total = calc_score(frame_to_scores)
+totals_in_frames = calc_score(scores_in_frames)
 
 # 出力
-puts(frame_to_total.values.inject(:+))
+puts(totals_in_frames.values.inject(:+))
