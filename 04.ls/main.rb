@@ -3,9 +3,7 @@
 
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names
-  Dir.foreach('.').reject do |content_name|
-    content_name.start_with?('.')
-  end
+  Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
 end
 
 def vertical_sort(content_names)
