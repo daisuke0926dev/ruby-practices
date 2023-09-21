@@ -6,7 +6,7 @@ def current_directory_content_names
   Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
 end
 
-def vertical_sort(content_names)
+def sort_vertically(content_names)
   sorted_content_names = []
   # 4つ表示時のみ2行で折り返し、それ以外はMAX3行で折り返すので。
   limit_per_line = content_names.size == 4 ? 2 : 3
@@ -44,7 +44,7 @@ end
 
 content_names = current_directory_content_names
 max_content_name_length = content_names.map(&:length).max
-sorted_content_names = vertical_sort(content_names)
+sorted_content_names = sort_vertically(content_names)
 
 sorted_content_names.each do |sorted_content_name|
   sorted_content_name.each { |v| print format("%-#{max_content_name_length + 1}s", v) }
