@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+MAX_COLUMN = 3
+
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names
   Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
@@ -8,10 +10,9 @@ end
 
 def sort_vertically(content_names)
   sorted_content_names = []
-  # 4つ表示時のみ2行で折り返し、それ以外はMAX3行で折り返すので。
-  limit_per_line = content_names.size == 4 ? 2 : 3
-  max_number_of_lines = (content_names.size / limit_per_line.to_f).ceil
-  amount_of_max_line_column = (content_names.size % limit_per_line)
+  max_number_of_lines = (content_names.size/MAX_COLUMN.to_f).ceil
+  limit_per_line =  (content_names.size / max_number_of_lines.to_f).ceil
+  amount_of_max_line_column = limit_per_line - ((max_number_of_lines*limit_per_line)%content_names.size)
 
   simple_sorted_content_names = content_names.sort
   amount_of_max_line_column.times do |line|
