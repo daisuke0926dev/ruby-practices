@@ -53,7 +53,7 @@ puts("#{show_month}月#{show_year}".center(20))
 puts
 # 1日の表示開始位置(曜日)まで空白埋め
 first_date.wday.times.each { print(format('%3s', '')) }
-(Date.new(show_year, show_month, 1)..Date.new(show_year, show_month, last_date.mday)).each do |date|
+(first_date)..last_date).each do |date|
   print(format('%3d', date.strftime('%e')))
   # 土曜日であれば改行
   puts if date.wday == 6
