@@ -45,7 +45,7 @@ def make_divided_content_names(content_names_without_max_line_column, divid_coun
   divided_content_names
 end
 
-def command_line_option_parser
+def parse_command_line_option
   option_lower_a = false
 
   opt = OptionParser.new
@@ -55,7 +55,7 @@ def command_line_option_parser
 end
 
 option_hash = { option_lower_a: false }
-option_lower_a = command_line_option_parser
+option_lower_a = parse_command_line_option
 option_hash[:option_lower_a] = option_lower_a
 
 content_names = current_directory_content_names(option_hash)
