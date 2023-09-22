@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
+
 require 'optparse'
 
 MAX_COLUMN = 3
@@ -53,7 +54,7 @@ def command_line_option_parser
   option_lower_a
 end
 
-option_hash = {option_lower_a: false}
+option_hash = { option_lower_a: false }
 option_lower_a = command_line_option_parser
 option_hash[:option_lower_a] = option_lower_a
 
