@@ -54,9 +54,9 @@ def parse_command_line_option
   { option_lower_a: }
 end
 
-option_hash = parse_command_line_option
+options = parse_command_line_option
 
-content_names = current_directory_content_names(option_hash)
+content_names = current_directory_content_names(options)
 max_content_name_length = content_names.map(&:length).max
 sorted_content_names = sort_vertically(content_names)
 
