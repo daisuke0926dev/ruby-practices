@@ -51,12 +51,10 @@ def parse_command_line_option
   opt = OptionParser.new
   opt.on('-a', '--add', 'add an item') { option_lower_a = true }
   opt.parse(ARGV)
-  option_lower_a
+  { option_lower_a: }
 end
 
-option_hash = { option_lower_a: false }
-option_lower_a = parse_command_line_option
-option_hash[:option_lower_a] = option_lower_a
+option_hash = parse_command_line_option
 
 content_names = current_directory_content_names(option_hash)
 max_content_name_length = content_names.map(&:length).max
