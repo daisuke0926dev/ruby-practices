@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
+require 'optparse'
 
 MAX_COLUMN = 3
 
@@ -42,6 +43,19 @@ def make_divided_content_names(content_names_without_max_line_column, divid_coun
   end
   divided_content_names
 end
+
+def command_line_option_parser
+  option_lower_a = false
+
+  opt = OptionParser.new
+  opt.on('-a', '--add', 'add an item') { option_lower_a = true }
+  opt.parse(ARGV)
+  option_lower_a
+end
+
+option_hash = {option_lower_a: false}
+option_lower_a = command_line_option_parser
+option_hash[:option_lower_a] = option_lower_a
 
 content_names = current_directory_content_names
 max_content_name_length = content_names.map(&:length).max
