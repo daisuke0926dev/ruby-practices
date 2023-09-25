@@ -6,8 +6,8 @@ require 'optparse'
 MAX_COLUMN = 3
 
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
-def current_directory_content_names(option_hash)
-  option_hash[:option_lower_a] ? Dir.foreach('.').to_a : Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
+def current_directory_content_names(options)
+  options[:option_lower_a] ? Dir.foreach('.').to_a : Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
 end
 
 def sort_vertically(content_names, options)
