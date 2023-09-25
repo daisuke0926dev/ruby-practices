@@ -53,7 +53,7 @@ def parse_command_line_option
   opt.on('-a', '--add', 'add an item') { option_lower_a = true }
   opt.on('-r', '--reverse', 'show reverse items') { option_reverse = true }
   opt.parse(ARGV)
-  { option_lower_a: , option_reverse: }
+  { option_lower_a:, option_reverse: }
 end
 
 options = parse_command_line_option
