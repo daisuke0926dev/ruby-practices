@@ -1,11 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'optparse'
+
 MAX_COLUMN = 3
 
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
-def current_directory_content_names
-  Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
+def current_directory_content_names(option_hash)
+  option_hash[:option_lower_a] ? Dir.foreach('.').to_a : Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
 end
 
 def sort_vertically(content_names)
@@ -43,7 +45,18 @@ def make_divided_content_names(content_names_without_max_line_column, divid_coun
   divided_content_names
 end
 
-content_names = current_directory_content_names
+def parse_command_line_option
+  option_lower_a = false
+
+  opt = OptionParser.new
+  opt.on('-a', '--add', 'add an item') { option_lower_a = true }
+  opt.parse(ARGV)
+  { option_lower_a: }
+end
+
+options = parse_command_line_option
+
+content_names = current_directory_content_names(options)
 max_content_name_length = content_names.map(&:length).max
 sorted_content_names = sort_vertically(content_names)
 
