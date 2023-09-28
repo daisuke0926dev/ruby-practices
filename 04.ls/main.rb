@@ -57,15 +57,33 @@ def parse_command_line_option
   { option_lower_a:, option_reverse:, option_lower_l: }
 end
 
+def sort_with_details(content_names); end
+
 options = parse_command_line_option
 
 content_names = current_directory_content_names(options)
-max_content_name_length = content_names.map(&:length).max
 
 simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
-sorted_content_names = sort_vertically(simple_sorted_content_names)
 
-sorted_content_names.each do |sorted_content_name|
-  sorted_content_name.each { |v| print format("%-#{max_content_name_length + 1}s", v) }
-  puts
+if options[:option_lower_l]
+  sorted_content_names_with_details = sort_with_details(simple_sorted_content_names)
+
+  max_content_name_length = Array.new(sorted_content_names_with_details[0].size, 0)
+  sorted_content_names_with_details.each do |sub_array|
+    sub_array.each_with_index do |item, index|
+      max_content_name_length[index] = [max_content_name_length[index], item.length].max
+    end
+  end
+
+  sorted_content_names_with_details.each do |sorted_content_name_with_details|
+    sorted_content_name_with_details.each_with_index { |v, i| print format("%-#{max_content_name_length[i] + 1}s", v) }
+    puts
+  end
+else
+  sorted_content_names = sort_vertically(simple_sorted_content_names)
+  max_content_name_length = content_names.map(&:length).max
+  sorted_content_names.each do |sorted_content_name|
+    sorted_content_name.each { |v| print format("%-#{max_content_name_length + 1}s", v) }
+    puts
+  end
 end
