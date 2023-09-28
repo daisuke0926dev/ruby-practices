@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
+require 'etc'
 
 MAX_COLUMN = 3
 
@@ -57,7 +58,27 @@ def parse_command_line_option
   { option_lower_a:, option_reverse:, option_lower_l: }
 end
 
-def sort_with_details(content_names); end
+def sort_with_details(content_names)
+  name_and_details = Array.new(content_names.size)
+  content_names.each_with_index do |content_name, index|
+    stat = File.stat("#{Dir.pwd}/#{content_name}")
+    name_and_details[index] = [
+      (stat.ftype[0]=="d" ? "d" : "-")+(format("%6d",stat.mode.to_s(8))[3,3].split('').map{translate_permission_number_to_text(_1.to_i)}.join),
+      stat.nlink.to_s,
+      Etc.getpwuid(stat.uid).name,
+      Etc.getgrgid(stat.gid).name,
+      stat.size.to_s.rjust(4),
+      format("%2d",stat.mtime.strftime("%-m")),
+      format("%2d",stat.mtime.strftime("%-d")),
+      stat.mtime.strftime("%R"),
+    content_name]
+  end
+  name_and_details
+end
+
+def translate_permission_number_to_text(permission_number)
+  format("%03d", permission_number.to_s(2)).split('').map.with_index{_1.to_i.zero? ? "-" : "rwx"[_2] }
+end
 
 options = parse_command_line_option
 
