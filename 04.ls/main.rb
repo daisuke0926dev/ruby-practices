@@ -10,18 +10,17 @@ def current_directory_content_names(options)
   options[:option_lower_a] ? Dir.foreach('.').to_a : Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
 end
 
-def sort_vertically(content_names, options)
+def sort_vertically(content_names)
   sorted_content_names = []
   max_number_of_lines = (content_names.size / MAX_COLUMN.to_f).ceil
   limit_per_line = (content_names.size / max_number_of_lines.to_f).ceil
   amount_of_max_line_column = limit_per_line - ((max_number_of_lines * limit_per_line) % content_names.size)
 
-  simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
   amount_of_max_line_column.times do |line|
-    sorted_content_names.push(simple_sorted_content_names[(line * max_number_of_lines), max_number_of_lines])
+    sorted_content_names.push(content_names[(line * max_number_of_lines), max_number_of_lines])
   end
 
-  content_names_without_max_line_column = simple_sorted_content_names[amount_of_max_line_column * max_number_of_lines..]
+  content_names_without_max_line_column = content_names[amount_of_max_line_column * max_number_of_lines..]
 
   # 転置後、縦に連番させるために、配列を区切ります
   divided_content_names_without_max_line_column =
@@ -62,7 +61,9 @@ options = parse_command_line_option
 
 content_names = current_directory_content_names(options)
 max_content_name_length = content_names.map(&:length).max
-sorted_content_names = sort_vertically(content_names, options)
+
+simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
+sorted_content_names = sort_vertically(simple_sorted_content_names)
 
 sorted_content_names.each do |sorted_content_name|
   sorted_content_name.each { |v| print format("%-#{max_content_name_length + 1}s", v) }
