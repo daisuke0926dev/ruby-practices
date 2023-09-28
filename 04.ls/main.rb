@@ -67,7 +67,7 @@ def sort_with_details(content_names)
       stat.nlink.to_s,
       Etc.getpwuid(stat.uid).name,
       Etc.getgrgid(stat.gid).name,
-      stat.size.to_s.rjust(4),
+      stat.size.to_s.rjust(5),
       format("%2d",stat.mtime.strftime("%-m")),
       format("%2d",stat.mtime.strftime("%-d")),
       stat.mtime.strftime("%R"),
