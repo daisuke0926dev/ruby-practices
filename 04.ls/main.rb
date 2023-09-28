@@ -59,25 +59,28 @@ def parse_command_line_option
 end
 
 def sort_with_details(content_names)
+  block_size = 0
   name_and_details = Array.new(content_names.size)
   content_names.each_with_index do |content_name, index|
     stat = File.stat("#{Dir.pwd}/#{content_name}")
     name_and_details[index] = [
-      (stat.ftype[0]=="d" ? "d" : "-")+(format("%6d",stat.mode.to_s(8))[3,3].split('').map{translate_permission_number_to_text(_1.to_i)}.join),
+      (stat.ftype[0] == 'd' ? 'd' : '-') + format('%6d', stat.mode.to_s(8))[3, 3].split('').map { translate_permission_number_to_text(_1.to_i) }.join,
       stat.nlink.to_s,
       Etc.getpwuid(stat.uid).name,
       Etc.getgrgid(stat.gid).name,
       stat.size.to_s.rjust(5),
-      format("%2d",stat.mtime.strftime("%-m")),
-      format("%2d",stat.mtime.strftime("%-d")),
-      stat.mtime.strftime("%R"),
-    content_name]
+      format('%2d', stat.mtime.strftime('%-m')),
+      format('%2d', stat.mtime.strftime('%-d')),
+      stat.mtime.strftime('%R'),
+      content_name
+    ]
+    block_size += (stat.size / 512).ceil
   end
-  name_and_details
+  [name_and_details, block_size]
 end
 
 def translate_permission_number_to_text(permission_number)
-  format("%03d", permission_number.to_s(2)).split('').map.with_index{_1.to_i.zero? ? "-" : "rwx"[_2] }
+  format('%03d', permission_number.to_s(2)).split('').map.with_index { _1.to_i.zero? ? '-' : 'rwx'[_2] }
 end
 
 options = parse_command_line_option
@@ -87,19 +90,18 @@ content_names = current_directory_content_names(options)
 simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
 
 if options[:option_lower_l]
-  sorted_content_names_with_details = sort_with_details(simple_sorted_content_names)
+  sorted_content_names_with_details, block_size = sort_with_details(simple_sorted_content_names)
 
   max_content_name_length = Array.new(sorted_content_names_with_details[0].size, 0)
+  puts("total #{block_size}")
   sorted_content_names_with_details.each do |sub_array|
     sub_array.each_with_index do |item, index|
       max_content_name_length[index] = [max_content_name_length[index], item.length].max
+      print format("%-#{max_content_name_length[index] + 1}s", item)
     end
-  end
-
-  sorted_content_names_with_details.each do |sorted_content_name_with_details|
-    sorted_content_name_with_details.each_with_index { |v, i| print format("%-#{max_content_name_length[i] + 1}s", v) }
     puts
   end
+
 else
   sorted_content_names = sort_vertically(simple_sorted_content_names)
   max_content_name_length = content_names.map(&:length).max
