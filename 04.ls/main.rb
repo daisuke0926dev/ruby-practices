@@ -69,8 +69,8 @@ def sort_with_details(content_names)
       Etc.getpwuid(stat.uid).name,
       Etc.getgrgid(stat.gid).name,
       stat.size.to_s.rjust(5),
-      format('%2d', stat.mtime.strftime('%-m')),
-      format('%2d', stat.mtime.strftime('%-d')),
+      stat.mtime.strftime('%-m').rjust(2),
+      stat.mtime.strftime('%-d').rjust(2),
       stat.mtime.strftime('%R'),
       content_name
     ]
@@ -97,10 +97,16 @@ if options[:option_lower_l]
   sorted_content_names_with_details.each do |sub_array|
     sub_array.each_with_index do |item, index|
       max_content_name_length[index] = [max_content_name_length[index], item.length].max
+    end
+  end
+  
+  sorted_content_names_with_details.each do |sub_array|
+    sub_array.each_with_index do |item, index|
       print format("%-#{max_content_name_length[index] + 1}s", item)
     end
     puts
   end
+
 
 else
   sorted_content_names = sort_vertically(simple_sorted_content_names)
