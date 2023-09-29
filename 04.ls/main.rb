@@ -65,7 +65,7 @@ def sort_with_details(content_names)
   content_names.each_with_index do |content_name, index|
     file_stat = get_file_stat(content_name)
     detailed_contents[index] = build_detailed_content(file_stat, content_name)
-    total_block_size += (file_stat.size / 512).ceil
+    total_block_size += file_stat.blocks
   end
 
   [detailed_contents, total_block_size]
