@@ -5,6 +5,16 @@ require 'optparse'
 require 'etc'
 
 MAX_COLUMN = 3
+FILE_TYPE = {
+  'fifo' => 'p',
+  'characterSpecial' => 'c',
+  'directory' => 'd',
+  'blockSpecial' => 'b',
+  'file' => '-',
+  'link' => 'l',
+  'socket' => 's'
+}
+
 
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names(options)
@@ -90,7 +100,8 @@ def build_detailed_content(file_stat, content_name)
 end
 
 def file_type_and_permissions(file_stat)
-  type = file_stat.ftype[0] == 'd' ? 'd' : '-'
+  type = FILE_TYPE[file_stat.ftype]
+  p file_stat.mode.to_s(8)
   permissions = format('%6d', file_stat.mode.to_s(8))[3, 3].chars.map { |num| translate_permission_number_to_text(num.to_i) }.join
   type + permissions
 end
