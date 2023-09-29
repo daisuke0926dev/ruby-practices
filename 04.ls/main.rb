@@ -59,55 +59,77 @@ def parse_command_line_option
 end
 
 def sort_with_details(content_names)
-  block_size = 0
-  name_and_details = Array.new(content_names.size)
+  total_block_size = 0
+  detailed_contents = Array.new(content_names.size)
+
   content_names.each_with_index do |content_name, index|
-    stat = File.stat("#{Dir.pwd}/#{content_name}")
-    name_and_details[index] = [
-      (stat.ftype[0] == 'd' ? 'd' : '-') + format('%6d', stat.mode.to_s(8))[3, 3].split('').map { translate_permission_number_to_text(_1.to_i) }.join,
-      stat.nlink.to_s,
-      Etc.getpwuid(stat.uid).name,
-      Etc.getgrgid(stat.gid).name,
-      stat.size.to_s.rjust(5),
-      stat.mtime.strftime('%-m').rjust(2),
-      stat.mtime.strftime('%-d').rjust(2),
-      stat.mtime.strftime('%R'),
-      content_name
-    ]
-    block_size += (stat.size / 512).ceil
+    file_stat = get_file_stat(content_name)
+    detailed_contents[index] = build_detailed_content(file_stat, content_name)
+    total_block_size += (file_stat.size / 512).ceil
   end
-  [name_and_details, block_size]
+
+  [detailed_contents, total_block_size]
+end
+
+def get_file_stat(content_name)
+  File.stat(File.join(Dir.pwd, content_name))
+end
+
+def build_detailed_content(file_stat, content_name)
+  [
+    file_type_and_permissions(file_stat),
+    file_stat.nlink.to_s,
+    Etc.getpwuid(file_stat.uid).name,
+    Etc.getgrgid(file_stat.gid).name,
+    file_stat.size.to_s.rjust(5),
+    file_stat.mtime.strftime('%-m').rjust(2),
+    file_stat.mtime.strftime('%-d').rjust(2),
+    file_stat.mtime.strftime('%R'),
+    content_name
+  ]
+end
+
+def file_type_and_permissions(file_stat)
+  type = file_stat.ftype[0] == 'd' ? 'd' : '-'
+  permissions = format('%6d', file_stat.mode.to_s(8))[3, 3].chars.map { |num| translate_permission_number_to_text(num.to_i) }.join
+  type + permissions
 end
 
 def translate_permission_number_to_text(permission_number)
-  format('%03d', permission_number.to_s(2)).split('').map.with_index { _1.to_i.zero? ? '-' : 'rwx'[_2] }
+  binary_representation = format('%03d', permission_number.to_s(2))
+  binary_representation.chars.map.with_index { |bit, index| bit.to_i.zero? ? '-' : 'rwx'[index] }.join
 end
 
-options = parse_command_line_option
+def display_sorted_contents(sorted_content_names_with_details, block_size)
+  max_lengths = calculate_max_lengths(sorted_content_names_with_details)
 
-content_names = current_directory_content_names(options)
-
-simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
-
-if options[:option_lower_l]
-  sorted_content_names_with_details, block_size = sort_with_details(simple_sorted_content_names)
-
-  max_content_name_length = Array.new(sorted_content_names_with_details[0].size, 0)
   puts("total #{block_size}")
   sorted_content_names_with_details.each do |sub_array|
     sub_array.each_with_index do |item, index|
-      max_content_name_length[index] = [max_content_name_length[index], item.length].max
-    end
-  end
-  
-  sorted_content_names_with_details.each do |sub_array|
-    sub_array.each_with_index do |item, index|
-      print format("%-#{max_content_name_length[index] + 1}s", item)
+      print format("%-#{max_lengths[index] + 1}s", item)
     end
     puts
   end
+end
 
+def calculate_max_lengths(sorted_content_names_with_details)
+  max_lengths = Array.new(sorted_content_names_with_details[0].size, 0)
 
+  sorted_content_names_with_details.each do |sub_array|
+    sub_array.each_with_index do |item, index|
+      max_lengths[index] = [max_lengths[index], item.length].max
+    end
+  end
+
+  max_lengths
+end
+
+options = parse_command_line_option
+content_names = current_directory_content_names(options)
+simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
+if options[:option_lower_l]
+  sorted_content_names_with_details, block_size = sort_with_details(simple_sorted_content_names)
+  display_sorted_contents(sorted_content_names_with_details, block_size)
 else
   sorted_content_names = sort_vertically(simple_sorted_content_names)
   max_content_name_length = content_names.map(&:length).max
