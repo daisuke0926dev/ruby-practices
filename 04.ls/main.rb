@@ -8,7 +8,7 @@ MAX_COLUMN = 3
 
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names(options)
-  options[:option_lower_a] ? Dir.foreach('.').to_a : Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
+  options[:option_show_hidden_files] ? Dir.foreach('.').to_a : Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
 end
 
 def sort_vertically(content_names)
@@ -46,16 +46,16 @@ def make_divided_content_names(content_names_without_max_line_column, divid_coun
 end
 
 def parse_command_line_option
-  option_lower_a = false
+  option_show_hidden_files = false
   option_reverse = false
-  option_lower_l = false
+  option_detailed_listing = false
 
   opt = OptionParser.new
-  opt.on('-a', '--add', 'add an item') { option_lower_a = true }
+  opt.on('-a', '--all', 'show all items') { option_show_hidden_files = true }
   opt.on('-r', '--reverse', 'show reverse items') { option_reverse = true }
-  opt.on('-l', '', 'show items detail') { option_lower_l = true }
+  opt.on('-l', '', 'detailed list of items') { option_detailed_listing = true }
   opt.parse(ARGV)
-  { option_lower_a:, option_reverse:, option_lower_l: }
+  { option_show_hidden_files:, option_reverse:, option_detailed_listing: }
 end
 
 def sort_with_details(content_names)
@@ -127,7 +127,7 @@ end
 options = parse_command_line_option
 content_names = current_directory_content_names(options)
 simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
-if options[:option_lower_l]
+if options[:option_detailed_listing]
   sorted_content_names_with_details, block_size = sort_with_details(simple_sorted_content_names)
   display_sorted_contents(sorted_content_names_with_details, block_size)
 else
