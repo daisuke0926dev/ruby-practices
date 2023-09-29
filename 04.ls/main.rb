@@ -87,7 +87,7 @@ end
 
 def build_detailed_content(file_stat, content_name)
   [
-    file_type_and_permissions(file_stat),
+    file_type(file_stat) + file_permission(file_stat),
     file_stat.nlink.to_s,
     Etc.getpwuid(file_stat.uid).name,
     Etc.getgrgid(file_stat.gid).name,
@@ -95,15 +95,16 @@ def build_detailed_content(file_stat, content_name)
     file_stat.mtime.strftime('%-m').rjust(2),
     file_stat.mtime.strftime('%-d').rjust(2),
     file_stat.mtime.strftime('%R'),
-    content_name
+    file_type(file_stat)=='l' ? "#{content_name} -> #{File.readlink(File.absolute_path(content_name))}" : content_name
   ]
 end
 
-def file_type_and_permissions(file_stat)
-  type = FILE_TYPE[file_stat.ftype]
-  p file_stat.mode.to_s(8)
-  permissions = format('%6d', file_stat.mode.to_s(8))[3, 3].chars.map { |num| translate_permission_number_to_text(num.to_i) }.join
-  type + permissions
+def file_type(file_stat)
+  FILE_TYPE[file_stat.ftype]
+end
+
+def file_permission(file_stat)
+  format('%6d', file_stat.mode.to_s(8))[3, 3].chars.map { |num| translate_permission_number_to_text(num.to_i) }.join
 end
 
 def translate_permission_number_to_text(permission_number)
