@@ -13,8 +13,7 @@ FILE_TYPE = {
   'file' => '-',
   'link' => 'l',
   'socket' => 's'
-}
-
+}.fleeze
 
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names(options)
@@ -95,7 +94,7 @@ def build_detailed_content(file_stat, content_name)
     file_stat.mtime.strftime('%-m').rjust(2),
     file_stat.mtime.strftime('%-d').rjust(2),
     file_stat.mtime.strftime('%R'),
-    file_type(file_stat)=='l' ? "#{content_name} -> #{File.readlink(File.absolute_path(content_name))}" : content_name
+    file_type(file_stat) == 'l' ? "#{content_name} -> #{File.readlink(File.absolute_path(content_name))}" : content_name
   ]
 end
 
