@@ -82,7 +82,7 @@ def sort_with_details(content_names)
 end
 
 def get_file_stat(content_name)
-  File.stat(File.join(Dir.pwd, content_name))
+  File.lstat(File.join(Dir.pwd, content_name))
 end
 
 def build_detailed_content(file_stat, content_name)
