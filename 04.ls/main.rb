@@ -111,7 +111,8 @@ def translate_permission_number_to_text(permission_number)
   binary_representation.chars.map.with_index { |bit, index| bit.to_i.zero? ? '-' : 'rwx'[index] }.join
 end
 
-def display_sorted_contents(sorted_content_names_with_details, block_size)
+def display_sorted_contents(simple_sorted_content_names)
+  sorted_content_names_with_details, block_size = sort_with_details(simple_sorted_content_names)
   max_lengths = calculate_max_lengths(sorted_content_names_with_details)
 
   puts("total #{block_size}")
@@ -139,8 +140,7 @@ options = parse_command_line_option
 content_names = current_directory_content_names(options)
 simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reverse : content_names.sort
 if options[:option_detailed_listing]
-  sorted_content_names_with_details, block_size = sort_with_details(simple_sorted_content_names)
-  display_sorted_contents(sorted_content_names_with_details, block_size)
+  display_sorted_contents(simple_sorted_content_names)
 else
   sorted_content_names = sort_vertically(simple_sorted_content_names)
   max_content_name_length = content_names.map(&:length).max
