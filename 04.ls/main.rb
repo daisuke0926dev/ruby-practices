@@ -115,8 +115,8 @@ def display_sorted_contents(sorted_content_names_with_details, block_size)
   max_lengths = calculate_max_lengths(sorted_content_names_with_details)
 
   puts("total #{block_size}")
-  sorted_content_names_with_details.each do |sub_array|
-    sub_array.each_with_index do |item, index|
+  sorted_content_names_with_details.each do |items|
+    items.each_with_index do |item, index|
       print format("%-#{max_lengths[index] + 1}s", item)
     end
     puts
@@ -126,8 +126,8 @@ end
 def calculate_max_lengths(sorted_content_names_with_details)
   max_lengths = Array.new(sorted_content_names_with_details[0].size, 0)
 
-  sorted_content_names_with_details.each do |sub_array|
-    sub_array.each_with_index do |item, index|
+  sorted_content_names_with_details.each do |items|
+    items.each_with_index do |item, index|
       max_lengths[index] = [max_lengths[index], item.length].max
     end
   end
