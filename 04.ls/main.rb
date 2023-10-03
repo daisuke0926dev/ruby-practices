@@ -20,7 +20,7 @@ def current_directory_content_names(options)
   options[:option_show_hidden_files] ? Dir.foreach('.').to_a : Dir.foreach('.').reject { |content_name| content_name.start_with?('.') }
 end
 
-def sort_vertically(content_names)
+def convert_to_table(content_names)
   sorted_content_names = []
   max_number_of_lines = (content_names.size / MAX_COLUMN.to_f).ceil
   limit_per_line = (content_names.size / max_number_of_lines.to_f).ceil
@@ -142,7 +142,7 @@ simple_sorted_content_names = options[:option_reverse] ? content_names.sort.reve
 if options[:option_detailed_listing]
   display_contents_with_details(simple_sorted_content_names)
 else
-  sorted_content_names = sort_vertically(simple_sorted_content_names)
+  sorted_content_names = convert_to_table(simple_sorted_content_names)
   max_content_name_length = content_names.map(&:length).max
   sorted_content_names.each do |sorted_content_name|
     sorted_content_name.each { |v| print format("%-#{max_content_name_length + 1}s", v) }
