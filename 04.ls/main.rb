@@ -72,7 +72,7 @@ def sort_with_details(content_names)
   detailed_contents = Array.new(content_names.size)
 
   content_names.each_with_index do |content_name, index|
-    file_stat = get_file_stat(content_name)
+    file_stat = file_stat(content_name)
     detailed_contents[index] = build_detailed_content(file_stat, content_name)
     total_block_size += file_stat.blocks
   end
@@ -80,7 +80,7 @@ def sort_with_details(content_names)
   [detailed_contents, total_block_size]
 end
 
-def get_file_stat(content_name)
+def file_stat(content_name)
   File.lstat(File.join(Dir.pwd, content_name))
 end
 
