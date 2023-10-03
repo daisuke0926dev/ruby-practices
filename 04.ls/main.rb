@@ -13,7 +13,7 @@ FILE_TYPE = {
   'file' => '-',
   'link' => 'l',
   'socket' => 's'
-}.fleeze
+}.freeze
 
 # ファイル名ディレクトリ名を包括するので、コンテンツと称しています。
 def current_directory_content_names(options)
