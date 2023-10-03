@@ -60,9 +60,9 @@ def parse_command_line_option
   option_detailed_listing = false
 
   opt = OptionParser.new
-  opt.on('-a', '--all', 'show all items') { option_show_hidden_files = true }
-  opt.on('-r', '--reverse', 'show reverse items') { option_reverse = true }
-  opt.on('-l', '', 'detailed list of items') { option_detailed_listing = true }
+  opt.on('-a', '--all', 'do not ignore entries starting with .') { option_show_hidden_files = true }
+  opt.on('-r', '--reverse', 'reverse order while sorting') { option_reverse = true }
+  opt.on('-l', '', 'use a long listing format') { option_detailed_listing = true }
   opt.parse(ARGV)
   { option_show_hidden_files:, option_reverse:, option_detailed_listing: }
 end
